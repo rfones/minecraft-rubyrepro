@@ -1,13 +1,14 @@
-var express = require('express');
+var express = require("express");
 var app = express();
 
-var v1 = require('./src/v1');
+var api = require("./src/api");
 
-app.use(express.json())
+app.use(express.json());
 
-app.use('/v1', v1);
+app.use("/api", api);
 
-app.get('/', function(req, res){
-   res.send("minecraft.rubyrepro.com");
+app.get("/", function(req, res) {
+  res.send("minecraft.rubyrepro.com");
 });
-app.listen(8080, '192.168.1.130');
+// app.listen(8080, '192.168.1.130');
+app.listen(8080);
