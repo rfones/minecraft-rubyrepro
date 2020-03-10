@@ -1,7 +1,17 @@
-var express = require("express");
-var app = express();
+const express = require("express");
+const session = require("express-session");
+const app = express();
 
-var api = require("./src/api");
+app.use(
+  session({
+    secret: "92d403ad-c5c5-4d7e-b635-f5440c5280c1",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: "auto" }
+  })
+);
+
+const api = require("./src/api");
 
 app.use(express.json());
 

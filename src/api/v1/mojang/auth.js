@@ -1,9 +1,7 @@
 const express = require("express");
 const auth = express.Router();
-const axios = require("axios");
 
-const AUTH_SERVER = "https://authserver.mojang.com";
-const CLIENT_UUID = "82bb8f42-1c46-4460-940b-8bd5821c48e1";
+const mojangAuth = require("../../../services/mojang/auth");
 
 auth.post("/login", function(req, res) {
   const username = req.body.username;
@@ -14,18 +12,15 @@ auth.post("/login", function(req, res) {
     return;
   }
 
-  axios
-    .post(`${AUTH_SERVER}/authenticate`, {
-      username,
-      password,
-      clientToken: CLIENT_UUID,
-      requestUser: true
-    })
+  const authService = new mojangAuth();
+  authService
+    .authenticate(username, password)
     .then(response => {
-      res.send(response.data);
+      req.session.accessToken = response.data.accessToken;
+      res.json({ success: true });
     })
     .catch(error => {
-      res.send(error);
+      res.status(403).send(error);
     });
 });
 

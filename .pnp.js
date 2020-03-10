@@ -76,6 +76,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["axios", "npm:0.19.2"],
             ["express", "npm:4.17.1"],
+            ["express-session", "npm:1.17.0"],
             ["nodemon", "npm:2.0.2"]
           ],
           "linkType": "SOFT"
@@ -640,6 +641,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["depd", "npm:1.1.2"]
           ],
           "linkType": "HARD"
+        }],
+        ["npm:2.0.0", {
+          "packageLocation": "./.yarn/cache/depd-npm-2.0.0-b6c51a4b43-1.zip/node_modules/depd/",
+          "packageDependencies": [
+            ["depd", "npm:2.0.0"]
+          ],
+          "linkType": "HARD"
         }]
       ]],
       ["destroy", [
@@ -786,6 +794,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["type-is", "npm:1.6.18"],
             ["utils-merge", "npm:1.0.1"],
             ["vary", "npm:1.1.2"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["express-session", [
+        ["npm:1.17.0", {
+          "packageLocation": "./.yarn/cache/express-session-npm-1.17.0-aab3d8020f-1.zip/node_modules/express-session/",
+          "packageDependencies": [
+            ["express-session", "npm:1.17.0"],
+            ["cookie", "npm:0.4.0"],
+            ["cookie-signature", "npm:1.0.6"],
+            ["debug", "npm:2.6.9"],
+            ["depd", "npm:2.0.0"],
+            ["on-headers", "npm:1.0.2"],
+            ["parseurl", "npm:1.3.3"],
+            ["safe-buffer", "npm:5.2.0"],
+            ["uid-safe", "npm:2.1.5"]
           ],
           "linkType": "HARD"
         }]
@@ -1506,6 +1531,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["minecraft-rubyrepro", "workspace:."],
             ["axios", "npm:0.19.2"],
             ["express", "npm:4.17.1"],
+            ["express-session", "npm:1.17.0"],
             ["nodemon", "npm:2.0.2"]
           ],
           "linkType": "SOFT"
@@ -1727,6 +1753,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"
         }]
       ]],
+      ["on-headers", [
+        ["npm:1.0.2", {
+          "packageLocation": "./.yarn/cache/on-headers-npm-1.0.2-e7cd3ea25e-1.zip/node_modules/on-headers/",
+          "packageDependencies": [
+            ["on-headers", "npm:1.0.2"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
       ["once", [
         ["npm:1.4.0", {
           "packageLocation": "./.yarn/cache/once-npm-1.4.0-ccf03ef07a-1.zip/node_modules/once/",
@@ -1941,6 +1976,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"
         }]
       ]],
+      ["random-bytes", [
+        ["npm:1.0.0", {
+          "packageLocation": "./.yarn/cache/random-bytes-npm-1.0.0-5a886b8827-1.zip/node_modules/random-bytes/",
+          "packageDependencies": [
+            ["random-bytes", "npm:1.0.0"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
       ["range-parser", [
         ["npm:1.2.1", {
           "packageLocation": "./.yarn/cache/range-parser-npm-1.2.1-1a470fa390-1.zip/node_modules/range-parser/",
@@ -2067,6 +2111,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/safe-buffer-npm-5.1.2-c27fedf6c4-1.zip/node_modules/safe-buffer/",
           "packageDependencies": [
             ["safe-buffer", "npm:5.1.2"]
+          ],
+          "linkType": "HARD"
+        }],
+        ["npm:5.2.0", {
+          "packageLocation": "./.yarn/cache/safe-buffer-npm-5.2.0-ceb420bcee-1.zip/node_modules/safe-buffer/",
+          "packageDependencies": [
+            ["safe-buffer", "npm:5.2.0"]
           ],
           "linkType": "HARD"
         }]
@@ -2385,6 +2436,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["type-is", "npm:1.6.18"],
             ["media-typer", "npm:0.3.0"],
             ["mime-types", "npm:2.1.26"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["uid-safe", [
+        ["npm:2.1.5", {
+          "packageLocation": "./.yarn/cache/uid-safe-npm-2.1.5-2f400e5dbd-1.zip/node_modules/uid-safe/",
+          "packageDependencies": [
+            ["uid-safe", "npm:2.1.5"],
+            ["random-bytes", "npm:1.0.0"]
           ],
           "linkType": "HARD"
         }]
