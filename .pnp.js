@@ -75,6 +75,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["axios", "npm:0.19.2"],
+            ["dotenv", "npm:8.2.0"],
             ["express", "npm:4.17.1"],
             ["express-session", "npm:1.17.0"],
             ["nodemon", "npm:2.0.2"]
@@ -665,6 +666,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["dot-prop", "npm:4.2.0"],
             ["is-obj", "npm:1.0.1"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["dotenv", [
+        ["npm:8.2.0", {
+          "packageLocation": "./.yarn/cache/dotenv-npm-8.2.0-6b21df4d37-1.zip/node_modules/dotenv/",
+          "packageDependencies": [
+            ["dotenv", "npm:8.2.0"]
           ],
           "linkType": "HARD"
         }]
@@ -1530,6 +1540,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["minecraft-rubyrepro", "workspace:."],
             ["axios", "npm:0.19.2"],
+            ["dotenv", "npm:8.2.0"],
             ["express", "npm:4.17.1"],
             ["express-session", "npm:1.17.0"],
             ["nodemon", "npm:2.0.2"]

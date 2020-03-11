@@ -510,6 +510,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "dotenv@npm:8.2.0"
+  checksum: 552d2c06ec0eee57b98c298105556041e4fd8ad985b34a73173a197e722478cd9bdaad2f98d80f3a227a414e2f4e6d4a2121b400a044e0690be1832c546dea55
+  languageName: node
+  linkType: hard
+
 "duplexer3@npm:^0.1.4":
   version: 0.1.4
   resolution: "duplexer3@npm:0.1.4"
@@ -1258,6 +1265,7 @@ fsevents@~2.1.2:
   resolution: "minecraft-rubyrepro@workspace:."
   dependencies:
     axios: ^0.19.2
+    dotenv: ^8.2.0
     express: ^4.17.1
     express-session: ^1.17.0
     nodemon: ^2.0.2

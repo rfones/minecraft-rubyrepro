@@ -17,6 +17,7 @@ auth.post("/login", function(req, res) {
     .authenticate(username, password)
     .then(response => {
       req.session.accessToken = response.data.accessToken;
+      req.session.user = response.data.user;
       res.json({ success: true });
     })
     .catch(error => {

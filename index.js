@@ -1,4 +1,6 @@
+require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const session = require("express-session");
 const app = express();
 
@@ -13,12 +15,17 @@ app.use(
 
 const api = require("./src/api");
 
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
+
 app.use(express.json());
 
 app.use("/api", api);
 
-app.get("/", function(req, res) {
-  res.send("minecraft.rubyrepro.com");
+// Handles any requests that don't match the ones above
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
+
 // app.listen(8080, '192.168.1.130');
 app.listen(8080);
