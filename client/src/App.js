@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import Login from "./views/Login";
+import Dashboard from "./views/Dashboard";
 
 function App() {
   const [authenticated, setAuthenticated] = useState('loading');
@@ -27,8 +28,7 @@ function App() {
   if (authenticated === 'loading') {
     return <></>
   } else if (authenticated) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return <img src={`https://crafatar.com/avatars/${user.id}`} alt={user.name} />;
+    return <Dashboard />
   }
   return <Login onSuccess={onLogin} />;
 }
