@@ -33,6 +33,8 @@ const Users = () => {
                 <img
                   src={`https://crafatar.com/avatars/${user.uuid}`}
                   alt={user.name}
+                  width="20"
+                  height="20"
                 />
               </td>
               <td>{user.name}</td>
