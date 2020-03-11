@@ -5,13 +5,13 @@ class users {
   ops;
   users;
   constructor() {
-    this.whitelist = fs.readFileSync(process.env.WHITELIST_JSON);
-    this.ops = fs.readFileSync(process.env.OPS_JSON);
+    this.whitelist = JSON.parse(fs.readFileSync(process.env.WHITELIST_JSON));
+    this.ops = JSON.parse(fs.readFileSync(process.env.OPS_JSON));
     this.users = [...this.whitelist, ...this.ops];
   }
 
   getAll() {
-    return JSON.parse(this.users);
+    return this.users;
   }
 
   save(user) {
@@ -43,7 +43,8 @@ class users {
         }
       } else {
         if (whitelistUser) {
-          whitelistUser = user;
+          // strip extra props from user
+          whitelistUser = { name: user.name, uuid: user.uuid };
         } else {
           this.whitelist.push(user);
         }
@@ -66,7 +67,6 @@ class users {
       return false;
     }
   }
-
 }
 
 module.exports = users;
