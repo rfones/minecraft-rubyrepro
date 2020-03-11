@@ -27,7 +27,7 @@ const Users = () => {
             <tr>
               <td>
                 <img
-                  src={`https://crafatar.com/avatars/${user.id}`}
+                  src={`https://crafatar.com/avatars/${user.uuid}`}
                   alt={user.name}
                 />
               </td>
