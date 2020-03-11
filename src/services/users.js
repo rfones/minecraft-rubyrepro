@@ -7,7 +7,7 @@ class users {
   constructor() {
     this.whitelist = fs.readFileSync(process.env.WHITELIST_JSON);
     this.ops = fs.readFileSync(process.env.OPS_JSON);
-    this.users = [...whitelist, ...ops];
+    this.users = [...this.whitelist, ...this.ops];
   }
 
   getAll() {
