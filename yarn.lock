@@ -168,7 +168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.19.0":
+"body-parser@npm:1.19.0, body-parser@npm:^1.19.0":
   version: 1.19.0
   resolution: "body-parser@npm:1.19.0"
   dependencies:
@@ -1265,6 +1265,7 @@ fsevents@~2.1.2:
   resolution: "minecraft-rubyrepro@workspace:."
   dependencies:
     axios: ^0.19.2
+    body-parser: ^1.19.0
     dotenv: ^8.2.0
     express: ^4.17.1
     express-session: ^1.17.0

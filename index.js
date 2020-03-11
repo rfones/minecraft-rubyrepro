@@ -15,10 +15,10 @@ app.use(
 
 const api = require("./src/api");
 
+app.use(express.json());
+
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
-
-app.use(express.json());
 
 app.use("/api", api);
 

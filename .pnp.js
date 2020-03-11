@@ -75,6 +75,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["axios", "npm:0.19.2"],
+            ["body-parser", "npm:1.19.0"],
             ["dotenv", "npm:8.2.0"],
             ["express", "npm:4.17.1"],
             ["express-session", "npm:1.17.0"],
@@ -1540,6 +1541,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["minecraft-rubyrepro", "workspace:."],
             ["axios", "npm:0.19.2"],
+            ["body-parser", "npm:1.19.0"],
             ["dotenv", "npm:8.2.0"],
             ["express", "npm:4.17.1"],
             ["express-session", "npm:1.17.0"],

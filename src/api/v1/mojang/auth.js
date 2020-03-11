@@ -16,13 +16,33 @@ auth.post("/login", function(req, res) {
   authService
     .authenticate(username, password)
     .then(response => {
-      req.session.accessToken = response.data.accessToken;
-      req.session.user = response.data.user;
-      res.json({ success: true });
+      const accessToken = response.data.accessToken;
+      const user = response.data.selectedProfile;
+      res.json({ success: true, accessToken, user });
     })
     .catch(error => {
       res.status(403).send(error);
     });
 });
+
+auth.post("/validate", function(req, res) {
+  const accessToken = req.body.accessToken;
+
+  if (!accessToken) {
+    res.status(400).send("accessToken is required");
+    return;
+  }
+
+  const authService = new mojangAuth();
+  authService
+    .validate(accessToken)
+    .then(response => {
+      console.log(response.data);
+      res.json({ success: true });
+    })
+    .catch(error => {
+      res.status(403).send(error);
+    });
+})
 
 module.exports = auth;

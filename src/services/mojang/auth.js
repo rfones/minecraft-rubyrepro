@@ -6,6 +6,10 @@ class auth {
 
   authenticate(username, password) {
     return axios.post(`${this.AUTH_SERVER}/authenticate`, {
+      agent: {
+        name: "Minecraft",
+        version: 1
+      },
       username,
       password,
       clientToken: this.CLIENT_UUID,
@@ -22,6 +26,13 @@ class auth {
         name: name
       },
       requestUser: true
+    });
+  }
+
+  validate(accessToken) {
+    return axios.post(`${this.AUTH_SERVER}/validate`, {
+      accessToken,
+      clientToken: this.CLIENT_UUID
     });
   }
 
