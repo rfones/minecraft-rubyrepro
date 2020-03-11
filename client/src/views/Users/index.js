@@ -8,7 +8,7 @@ const Users = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {
       let data = response.data;
       data.sort((a, b) => {
-        a.name > b.name;
+        return a.name > b.name;
       });
       setUsers(data);
     });
