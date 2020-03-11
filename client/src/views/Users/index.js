@@ -22,7 +22,6 @@ const Users = () => {
           <tr>
             <th>&nbsp;</th>
             <th>Name</th>
-            <th>UUID</th>
             <th>Op?</th>
           </tr>
         </thead>
@@ -38,8 +37,7 @@ const Users = () => {
                 />
               </td>
               <td>{user.name}</td>
-              <td>{user.uuid}</td>
-              <td>{user.level & (user.level > 0) ? "Yes" : "No"}</td>
+              <td>{user.level && user.level > 0 ? "Yes" : "No"}</td>
             </tr>
           ))}
         </tbody>
