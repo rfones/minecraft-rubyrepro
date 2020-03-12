@@ -59,7 +59,7 @@ const Users = () => {
   return (
     <>
       <Typography variant="h5" component="h2">
-        Whitelisted Users
+        Users
       </Typography>
       {state.canAdd && (
         <Toolbar>

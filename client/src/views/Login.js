@@ -65,7 +65,7 @@ const Login = ({onSuccess}) => {
             {state.error && (
                 <Alert severity="error">{state.error}</Alert>
             )}
-            <Typography variant="body2" align="center">Use your Mojang account to log in</Typography>
+            <Typography variant="body2" align="center">Use your Minecraft/Mojang account to log in</Typography>
             <TextField
               variant="outlined"
               margin="normal"
