@@ -18,15 +18,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
 
+import Add from './Add';
+
 const Users = () => {
   const [state, setState] = useState({
     isOp: false,
     level: 0
   });
+  const [open, setOpen] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("user"));
     axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {
       let data = response.data;
       data.sort((a, b) => {
@@ -35,21 +37,32 @@ const Users = () => {
         return 0;
       });
       setUsers(data);
-      const user = data.find(
+      
+    });
+  }, []);
+
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("user"));
+    const user = users.find(
         user =>
           user.uuid &&
           user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "")
       );
-      if (user && user.level) {
-        let newState = { ...state };
-        if (user.level >= 0) {
-          newState.isOp = true;
-          newState.level = user.level;
-        }
-        setState(newState);
+      if (user && user.level >= 0) {
+        setState({
+            isOp: true,
+            level: user.level
+        });
       }
-    });
-  }, []);
+  }, [users])
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const classes = useStyles();
 
@@ -58,16 +71,20 @@ const Users = () => {
       <Typography variant="h5" component="h2">
         Users
       </Typography>
-      {state.canAdd && (
+      {state.isOp && (
+          <>
         <Toolbar>
           <Button
             variant="contained"
             color="primary"
             startIcon={<FontAwesomeIcon icon={faPlus} />}
+            onClick={handleClickOpen}
           >
             Add User
           </Button>
         </Toolbar>
+        <Add open={open} handleClose={handleClose} level={state.level} />
+        </>
       )}
       <TableContainer component={Paper}>
         <Table aria-label="Users">
