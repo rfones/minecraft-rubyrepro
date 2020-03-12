@@ -16,12 +16,12 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
 
 const Users = () => {
   const [state, setState] = useState({
-    canAdd: false,
-    canOp: false
+    isOp: false,
+    level: 0
   });
   const [users, setUsers] = useState([]);
 
@@ -40,14 +40,11 @@ const Users = () => {
           user.uuid &&
           user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "")
       );
-      console.log(user);
       if (user && user.level) {
         let newState = { ...state };
         if (user.level >= 0) {
-          newState.canAdd = true;
-        }
-        if (user.level >= 4) {
-          newState.canOp = true;
+          newState.isOp = true;
+          newState.level = user.level;
         }
         setState(newState);
       }
@@ -77,17 +74,17 @@ const Users = () => {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="right">Op Level</TableCell>
+              {state.isOp && <TableCell align="right">Op Level</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
             {users.map(user => (
               <TableRow
                 key={user.name}
-                className={state.canAdd ? classes.clickable : ""}
+                className={state.isOp ? classes.clickable : ""}
               >
                 <TableCell scope="row">
-                  <div style={{ display: "flex" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <img
                       src={`https://crafatar.com/avatars/${user.uuid}`}
                       alt={user.name}
@@ -96,11 +93,16 @@ const Users = () => {
                       style={{ marginRight: 8 }}
                     />
                     {user.name}
+                    {user.level && parseInt(user.level, 10) && (
+                      <FontAwesomeIcon icon={faStar} className={classes.star} title="Op" />
+                    )}
                   </div>
                 </TableCell>
-                <TableCell align="right">
-                  {user.level ? user.level : "-"}
-                </TableCell>
+                {state.isOp && (
+                  <TableCell align="right">
+                    {user.level ? user.level : "-"}
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
@@ -116,6 +118,10 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: "#eee"
     }
+  },
+  star: {
+    color: "#fc0",
+    marginLeft: theme.spacing(0.5)
   }
 }));
 
