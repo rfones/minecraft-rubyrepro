@@ -27,18 +27,10 @@ const Users = () => {
   });
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState([]);
+  const [userEdit, setUserEdit] = useState({});
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {
-      let data = response.data;
-      data.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-        return 0;
-      });
-      setUsers(data);
-      
-    });
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -56,13 +48,33 @@ const Users = () => {
       }
   }, [users])
 
+  const fetchUsers = () => {
+    axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {
+        let data = response.data;
+        data.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+          return 0;
+        });
+        setUsers(data);
+      });
+  }
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setUserEdit({});
     setOpen(false);
+    fetchUsers();
   };
+
+  const editUser = user => () => {
+    if (!state.isOp) return;
+    setUserEdit(user);
+    setOpen(true);
+  }
 
   const classes = useStyles();
 
@@ -83,7 +95,7 @@ const Users = () => {
             Add User
           </Button>
         </Toolbar>
-        <Add open={open} handleClose={handleClose} level={state.level} />
+        <Add open={open} handleClose={handleClose} level={state.level} userEdit={userEdit} />
         </>
       )}
       <TableContainer component={Paper}>
@@ -99,6 +111,7 @@ const Users = () => {
               <TableRow
                 key={user.name}
                 className={state.isOp ? classes.clickable : ""}
+                onClick={editUser(user)}
               >
                 <TableCell scope="row">
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -110,8 +123,8 @@ const Users = () => {
                       style={{ marginRight: 8 }}
                     />
                     {user.name}
-                    {user.level && parseInt(user.level, 10) && (
-                      <FontAwesomeIcon icon={faStar} className={classes.star} title="Op" />
+                    {user.level >= 0 && (
+                      <FontAwesomeIcon icon={faStar} className={classes.star} title={`Op - Level ${user.level}`} />
                     )}
                   </div>
                 </TableCell>

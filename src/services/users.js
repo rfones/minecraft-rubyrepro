@@ -25,7 +25,7 @@ class users {
           opsUser.uuid.replace(/-/g, "") === user.uuid.replace(/-/g, "")
       );
       try {
-        if (user.level && user.level > 0) {
+        if (user.level && user.level >= 0) {
           if (opsUser) {
             opsUser = user;
           } else {
