@@ -16,7 +16,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faStar as fasStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
 
 import Add from './Add';
 
@@ -123,8 +124,11 @@ const Users = () => {
                       style={{ marginRight: 8 }}
                     />
                     {user.name}
-                    {user.level >= 0 && (
-                      <FontAwesomeIcon icon={faStar} className={classes.star} title={`Op - Level ${user.level}`} />
+                    {user.level === "0" && (
+                      <FontAwesomeIcon icon={farStar} className={classes.star} title={`Op - Level ${user.level}`} />
+                    )}
+                    {user.level > 0 && (
+                      <FontAwesomeIcon icon={fasStar} className={classes.star} title={`Op - Level ${user.level}`} />
                     )}
                   </div>
                 </TableCell>
