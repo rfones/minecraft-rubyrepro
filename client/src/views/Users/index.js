@@ -30,12 +30,13 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [userEdit, setUserEdit] = useState({});
 
+  const localUser = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("user"));
     const user = users.find(
         user =>
           user.uuid &&
@@ -72,7 +73,7 @@ const Users = () => {
   };
 
   const editUser = user => () => {
-    if (!state.isOp) return;
+    if (!state.isOp || user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "")) return;
     setUserEdit(user);
     setOpen(true);
   }
@@ -111,7 +112,7 @@ const Users = () => {
             {users.map(user => (
               <TableRow
                 key={user.name}
-                className={state.isOp ? classes.clickable : ""}
+                className={user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "") ? classes.self : state.isOp ? classes.clickable : ""}
                 onClick={editUser(user)}
               >
                 <TableCell scope="row">
@@ -150,6 +151,9 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: "#eee"
     }
+  },
+  self: {
+      backgroundColor: '#ffc'
   },
   avatar: {
     marginRight: theme.spacing(1)

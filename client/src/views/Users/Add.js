@@ -107,11 +107,9 @@ export default function Add({ open, handleClose, level, userEdit = {} }) {
               <>
                 <div className={classes.foundUser}>
                   <img
-                    src={`https://crafatar.com/avatars/${model.uuid}`}
+                    src={`https://crafatar.com/avatars/${model.uuid}?size=80`}
                     alt={model.name}
-                    width="80"
-                    height="80"
-                    style={{ marginRight: 8 }}
+                    className={classes.avatar}
                   />
                   <div className={classes.username}>{model.name}</div>
                   <div className={classes.userid}>{model.uuid}</div>
@@ -164,6 +162,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     flexDirection: "column",
     margin: theme.spacing(1, 0)
+  },
+  avatar: {
+    marginRight: theme.spacing(1)
   },
   username: {
     fontSize: "18px",
