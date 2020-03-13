@@ -8,6 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MenuItem from "@material-ui/core/MenuItem";
+import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function Add({ open, handleClose, level }) {
@@ -21,6 +22,7 @@ export default function Add({ open, handleClose, level }) {
     name: "",
     id: ""
   });
+  const [error, setError] = useState("");
 
   const handleChange = name => event => {
     const value = event.target.value;
@@ -36,8 +38,13 @@ export default function Add({ open, handleClose, level }) {
       .get(`${process.env.REACT_APP_API_URL}/mojang/uuid/${model.name}`)
       .then(response => {
         setUser(response.data);
-        setModel(prevState => ({ ...prevState, uuid: response.data.id }));
-        setFound(true);
+        if (response.data && response.data.id) {
+          setModel(prevState => ({ ...prevState, uuid: response.data.id }));
+          setFound(true);
+          setError("");
+        } else {
+          setError(`User "${model.name}" not found!`);
+        }
       });
   };
 
@@ -45,38 +52,50 @@ export default function Add({ open, handleClose, level }) {
     axios
       .post(`${process.env.REACT_APP_API_URL}/users`, model)
       .then(response => {
-        console.log("addUser");
-        // reset state
+        closeDialog();
+      })
+      .catch(err => {
         setFound(false);
-        setModel({
-          name: "",
-          uuid: "",
-          level: ""
-        });
         setUser({
           name: "",
           id: ""
         });
-        handleClose();
-      })
-      .catch(err => {
-          alert(err.response.data.message);
-        console.error(err.response.data.message);
+        setError(err.response.data.message);
       });
   };
 
+  const closeDialog = () => {
+    // reset state
+    setFound(false);
+    setModel({
+      name: "",
+      uuid: "",
+      level: ""
+    });
+    setUser({
+      name: "",
+      id: ""
+    });
+    setError("");
+    handleClose();
+  };
   const classes = useStyles();
 
   return (
     <>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={closeDialog}
         aria-labelledby="form-dialog-title"
       >
         <form onSubmit={onSubmit}>
           <DialogTitle id="form-dialog-title">Add User</DialogTitle>
           <DialogContent>
+            {error && (
+              <Alert className={classes.error} severity="error">
+                {error}
+              </Alert>
+            )}
             {!found && (
               <TextField
                 autoFocus
@@ -123,7 +142,7 @@ export default function Add({ open, handleClose, level }) {
             )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={closeDialog} color="primary">
               Cancel
             </Button>
             {found && (
@@ -157,5 +176,8 @@ const useStyles = makeStyles(theme => ({
   },
   userid: {
     fontSize: "11px"
+  },
+  error: {
+    marginBottom: theme.spacing(2)
   }
 }));

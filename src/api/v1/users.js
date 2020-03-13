@@ -36,7 +36,7 @@ users.post("/", function(req, res) {
     user => user.uuid.replace(/-/g, "") === req.body.uuid.replace(/-/g, "")
   );
   if (user) {
-    res.status(400).send({ message: "user already exists" });
+    res.status(400).send({ message: `User "${req.body.name}" already exists!` });
     return;
   }
 
