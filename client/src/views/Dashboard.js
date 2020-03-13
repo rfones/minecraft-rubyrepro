@@ -25,11 +25,9 @@ const Dashbaord = () => {
           <div className={classes.userInfo}>
             {user.name}
             <img
-              src={`https://crafatar.com/avatars/${user.id}`}
+              src={`https://crafatar.com/avatars/${user.id}?size=32`}
               alt={user.name}
-              width="32"
-              height="32"
-              style={{ marginLeft: 8 }}
+              className={classes.avatar}
             />
           </div>
         </Toolbar>
@@ -49,6 +47,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         fontSize: '18px'
+    },
+    avatar: {
+        marginLeft: theme.spacing(1)
     },
     container: {
         marginTop: theme.spacing(2)

@@ -16,7 +16,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faStar as fasStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
 
 import Add from './Add';
 
@@ -27,22 +28,15 @@ const Users = () => {
   });
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState([]);
+  const [userEdit, setUserEdit] = useState({});
+
+  const localUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {
-      let data = response.data;
-      data.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-        return 0;
-      });
-      setUsers(data);
-      
-    });
+    fetchUsers();
   }, []);
 
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("user"));
     const user = users.find(
         user =>
           user.uuid &&
@@ -56,13 +50,33 @@ const Users = () => {
       }
   }, [users])
 
+  const fetchUsers = () => {
+    axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {
+        let data = response.data;
+        data.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+          return 0;
+        });
+        setUsers(data);
+      });
+  }
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setUserEdit({});
     setOpen(false);
+    fetchUsers();
   };
+
+  const editUser = user => () => {
+    if (!state.isOp || user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "")) return;
+    setUserEdit(user);
+    setOpen(true);
+  }
 
   const classes = useStyles();
 
@@ -83,7 +97,7 @@ const Users = () => {
             Add User
           </Button>
         </Toolbar>
-        <Add open={open} handleClose={handleClose} level={state.level} />
+        <Add open={open} handleClose={handleClose} level={state.level} userEdit={userEdit} />
         </>
       )}
       <TableContainer component={Paper}>
@@ -98,20 +112,22 @@ const Users = () => {
             {users.map(user => (
               <TableRow
                 key={user.name}
-                className={state.isOp ? classes.clickable : ""}
+                className={user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "") ? classes.self : state.isOp ? classes.clickable : ""}
+                onClick={editUser(user)}
               >
                 <TableCell scope="row">
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                      src={`https://crafatar.com/avatars/${user.uuid}`}
+                        className={classes.avatar}
+                      src={`https://crafatar.com/avatars/${user.uuid}?size=20`}
                       alt={user.name}
-                      width="20"
-                      height="20"
-                      style={{ marginRight: 8 }}
                     />
                     {user.name}
-                    {user.level && parseInt(user.level, 10) && (
-                      <FontAwesomeIcon icon={faStar} className={classes.star} title="Op" />
+                    {user.level === "0" && (
+                      <FontAwesomeIcon icon={farStar} className={classes.star} title={`Op - Level ${user.level}`} />
+                    )}
+                    {user.level > 0 && (
+                      <FontAwesomeIcon icon={fasStar} className={classes.star} title={`Op - Level ${user.level}`} />
                     )}
                   </div>
                 </TableCell>
@@ -135,6 +151,12 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: "#eee"
     }
+  },
+  self: {
+      backgroundColor: '#ffc'
+  },
+  avatar: {
+    marginRight: theme.spacing(1)
   },
   star: {
     color: "#fc0",

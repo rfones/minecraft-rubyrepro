@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Button from "@material-ui/core/Button";
@@ -11,18 +11,21 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 
-export default function Add({ open, handleClose, level }) {
+export default function Add({ open, handleClose, level, userEdit = {} }) {
   const [found, setFound] = useState(false);
   const [model, setModel] = useState({
     name: "",
     uuid: "",
     level: ""
   });
-  const [user, setUser] = useState({
-    name: "",
-    id: ""
-  });
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (userEdit.uuid) {
+      setFound(true);
+      setModel(prevState => ({ ...prevState, ...userEdit }));
+    }
+  }, [userEdit]);
 
   const handleChange = name => event => {
     const value = event.target.value;
@@ -37,7 +40,6 @@ export default function Add({ open, handleClose, level }) {
     axios
       .get(`${process.env.REACT_APP_API_URL}/mojang/uuid/${model.name}`)
       .then(response => {
-        setUser(response.data);
         if (response.data && response.data.id) {
           setModel(prevState => ({ ...prevState, uuid: response.data.id }));
           setFound(true);
@@ -56,10 +58,6 @@ export default function Add({ open, handleClose, level }) {
       })
       .catch(err => {
         setFound(false);
-        setUser({
-          name: "",
-          id: ""
-        });
         setError(err.response.data.message);
       });
   };
@@ -71,10 +69,6 @@ export default function Add({ open, handleClose, level }) {
       name: "",
       uuid: "",
       level: ""
-    });
-    setUser({
-      name: "",
-      id: ""
     });
     setError("");
     handleClose();
@@ -89,7 +83,9 @@ export default function Add({ open, handleClose, level }) {
         aria-labelledby="form-dialog-title"
       >
         <form onSubmit={onSubmit}>
-          <DialogTitle id="form-dialog-title">Add User</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            {userEdit.uuid ? "Edit" : "Add"} User
+          </DialogTitle>
           <DialogContent>
             {error && (
               <Alert className={classes.error} severity="error">
@@ -107,18 +103,16 @@ export default function Add({ open, handleClose, level }) {
                 onChange={handleChange("name")}
               />
             )}
-            {user.name && user.id && (
+            {model.name && model.uuid && (
               <>
                 <div className={classes.foundUser}>
                   <img
-                    src={`https://crafatar.com/avatars/${user.id}`}
-                    alt={user.name}
-                    width="80"
-                    height="80"
-                    style={{ marginRight: 8 }}
+                    src={`https://crafatar.com/avatars/${model.uuid}?size=80`}
+                    alt={model.name}
+                    className={classes.avatar}
                   />
-                  <div className={classes.username}>{user.name}</div>
-                  <div className={classes.userid}>{user.id}</div>
+                  <div className={classes.username}>{model.name}</div>
+                  <div className={classes.userid}>{model.uuid}</div>
                 </div>
                 {level > 0 && (
                   <TextField
@@ -147,7 +141,7 @@ export default function Add({ open, handleClose, level }) {
             </Button>
             {found && (
               <Button onClick={addUser} color="primary" type="submit">
-                Add
+                {userEdit.uuid ? "Save" : "Add"}
               </Button>
             )}
             {!found && (
@@ -168,6 +162,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     flexDirection: "column",
     margin: theme.spacing(1, 0)
+  },
+  avatar: {
+    marginRight: theme.spacing(1)
   },
   username: {
     fontSize: "18px",

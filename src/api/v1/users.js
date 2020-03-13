@@ -32,13 +32,13 @@ users.post("/", function(req, res) {
   }
 
   // make sure user does not already exist
-  const user = users.find(
-    user => user.uuid.replace(/-/g, "") === req.body.uuid.replace(/-/g, "")
-  );
-  if (user) {
-    res.status(400).send({ message: `User "${req.body.name}" already exists!` });
-    return;
-  }
+//   const user = users.find(
+//     user => user.uuid.replace(/-/g, "") === req.body.uuid.replace(/-/g, "")
+//   );
+//   if (user) {
+//     res.status(400).send({ message: `User "${req.body.name}" already exists!` });
+//     return;
+//   }
 
   // insert user
   usersService
