@@ -117,11 +117,9 @@ const Users = () => {
                 <TableCell scope="row">
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                      src={`https://crafatar.com/avatars/${user.uuid}`}
+                        className={classes.avatar}
+                      src={`https://crafatar.com/avatars/${user.uuid}?size=20`}
                       alt={user.name}
-                      width="20"
-                      height="20"
-                      style={{ marginRight: 8 }}
                     />
                     {user.name}
                     {user.level === "0" && (
@@ -152,6 +150,9 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: "#eee"
     }
+  },
+  avatar: {
+    marginRight: theme.spacing(1)
   },
   star: {
     color: "#fc0",
