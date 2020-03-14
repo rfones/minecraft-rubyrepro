@@ -16,9 +16,14 @@ const Dashbaord = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [serverInfo, setServerInfo] = useState({});
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/server`).then(response => {
-      setServerInfo(response.data);
-    });
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/server`)
+      .then(response => {
+        setServerInfo(response.data);
+      })
+      .catch(error => {
+        setServerInfo({ message: "Server offline" });
+      });
   }, []);
 
   const getServerInfo = () => {
@@ -33,6 +38,13 @@ const Dashbaord = () => {
             {serverInfo.raw.vanilla.raw.players.max} - Version{" "}
             {serverInfo.raw.vanilla.raw.version.name}
           </Typography>
+        </div>
+      );
+    } else if (serverInfo.message) {
+      return (
+        <div className={classes.heading}>
+          <Typography variant="h6">minecraft.rubyrepro.com</Typography>
+          <Typography variant="body2">{serverInfo.message}</Typography>
         </div>
       );
     }

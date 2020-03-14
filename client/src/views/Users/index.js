@@ -67,6 +67,9 @@ const Users = () => {
   const fetchServer = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/server`).then(response => {
       setServerInfo(response.data);
+    })
+    .catch(error => {
+      console.log("server offline");
     });
   };
   const handleClickOpen = () => {
