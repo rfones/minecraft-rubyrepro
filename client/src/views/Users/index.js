@@ -48,7 +48,7 @@ const Users = () => {
             level: user.level
         });
       }
-  }, [users])
+  }, [users, localUser.id])
 
   const fetchUsers = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {

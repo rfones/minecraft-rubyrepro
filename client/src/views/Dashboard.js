@@ -19,7 +19,7 @@ const Dashbaord = () => {
   return (
     <>
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" className={classes.heading}>minecraft.rubyrepro.com</Typography>
           <div className={classes.userInfo}>
@@ -52,7 +52,8 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1)
     },
     container: {
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(4)
     }
 }));
 
