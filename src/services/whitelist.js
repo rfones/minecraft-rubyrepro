@@ -78,6 +78,37 @@ class whitelist {
       }
     });
   }
+
+  delete(uuid) {
+    return new Promise((resolve, reject) => {
+      let whitelistUser = this.whitelist.findIndex(
+        whitelistUser =>
+          whitelistUser.uuid.replace(/-/g, "") === uuid.replace(/-/g, "")
+      );
+      let opsUser = this.ops.findIndex(
+        opsUser =>
+          opsUser.uuid.replace(/-/g, "") === uuid.replace(/-/g, "")
+      );
+      try {
+        if (opsUser > -1) {
+          this.ops.splice(opsUser, 1);
+          fs.writeFileSync(
+            process.env.OPS_JSON,
+            JSON.stringify(this.ops, null, 2)
+          );
+        } else if (whitelistUser > -1) {
+          this.whitelist.splice(whitelistUser, 1);
+          fs.writeFileSync(
+            process.env.WHITELIST_JSON,
+            JSON.stringify(this.whitelist, null, 2)
+          );
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
 
 module.exports = whitelist;

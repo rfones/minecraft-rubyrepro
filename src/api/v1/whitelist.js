@@ -11,11 +11,11 @@ whitelist.get("/", function(req, res) {
 
 whitelist.post("/", function(req, res) {
   const whitelistService = new Whitelist();
-  const users = whitelistService.getAll();
 
   let errors = [];
   let name = req.body.name;
   let uuid = req.body.uuid;
+  let level = req.body.level;
   if (!name) {
     errors.push({
       field: "name",
@@ -35,7 +35,7 @@ whitelist.post("/", function(req, res) {
   }
 
   // make sure uuid is formatted with dashes, required by whitelist.json
-  if (uuid.legnth === 32) {
+  if (uuid.length === 32) {
     uuid =
       uuid.substr(0, 8) +
       "-" +
@@ -51,9 +51,9 @@ whitelist.post("/", function(req, res) {
   // insert/update player
   whitelistService
     .save({
-      name: req.body.name,
-      uuid: req.body.uuid,
-      level: req.body.level
+      name: name,
+      uuid: uuid,
+      level: level
     })
     .then(response => {
       res.send({ success: true });
@@ -61,6 +61,32 @@ whitelist.post("/", function(req, res) {
     .catch(error => {
       res.status(400).send(error);
     });
+});
+
+whitelist.delete("/:uuid", function(req, res) {
+  const whitelistService = new Whitelist();
+  let errors = [];
+  let uuid = req.params.uuid;
+
+  if (!uuid) {
+    errors.push({
+      field: "uuid",
+      message: "is required"
+    });
+  }
+
+  if (errors.length) {
+    res.status(400).send({ message: "validation errors", errors });
+    return;
+  }
+
+  whitelistService.delete(uuid)
+  .then(response => {
+    res.send({ success: true });
+  })
+  .catch(error => {
+    res.status(400).send(error);
+  });
 });
 
 module.exports = whitelist;

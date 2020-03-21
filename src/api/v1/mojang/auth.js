@@ -3,7 +3,7 @@ const auth = express.Router();
 
 const mojangAuth = require("../../../services/mojang/auth");
 
-auth.post("/login", function(req, res) {
+auth.post("/", function(req, res) {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -21,7 +21,7 @@ auth.post("/login", function(req, res) {
       res.json({ success: true, accessToken, user });
     })
     .catch(error => {
-      res.status(403).send(error);
+      res.status(403).send({message: "Authentication failed!"});
     });
 });
 

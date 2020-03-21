@@ -40,6 +40,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       102,
       98,
       96,
+      95,
       94,
       92,
       90,
@@ -82,9 +83,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["body-parser", "npm:1.19.0"],
             ["dotenv", "npm:8.2.0"],
             ["express", "npm:4.17.1"],
+            ["express-bearer-token", "npm:2.4.0"],
             ["express-session", "npm:1.17.0"],
             ["gamedig", "npm:2.0.20"],
-            ["nodemon", "npm:2.0.2"]
+            ["jsonwebtoken", "npm:8.5.1"],
+            ["nodemon", "npm:2.0.2"],
+            ["uuid", "npm:7.0.2"]
           ],
           "linkType": "SOFT"
         }]
@@ -415,6 +419,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"
         }]
       ]],
+      ["buffer-equal-constant-time", [
+        ["npm:1.0.1", {
+          "packageLocation": "./.yarn/cache/buffer-equal-constant-time-npm-1.0.1-41826f3419-1.zip/node_modules/buffer-equal-constant-time/",
+          "packageDependencies": [
+            ["buffer-equal-constant-time", "npm:1.0.1"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
       ["bytes", [
         ["npm:3.1.0", {
           "packageLocation": "./.yarn/cache/bytes-npm-3.1.0-19c5b15405-1.zip/node_modules/bytes/",
@@ -634,10 +647,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["cookie", [
+        ["npm:0.3.1", {
+          "packageLocation": "./.yarn/cache/cookie-npm-0.3.1-111f39dba6-1.zip/node_modules/cookie/",
+          "packageDependencies": [
+            ["cookie", "npm:0.3.1"]
+          ],
+          "linkType": "HARD"
+        }],
         ["npm:0.4.0", {
           "packageLocation": "./.yarn/cache/cookie-npm-0.4.0-4b3d629e45-1.zip/node_modules/cookie/",
           "packageDependencies": [
             ["cookie", "npm:0.4.0"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["cookie-parser", [
+        ["npm:1.4.5", {
+          "packageLocation": "./.yarn/cache/cookie-parser-npm-1.4.5-85a59b20ec-1.zip/node_modules/cookie-parser/",
+          "packageDependencies": [
+            ["cookie-parser", "npm:1.4.5"],
+            ["cookie", "npm:0.4.0"],
+            ["cookie-signature", "npm:1.0.6"]
           ],
           "linkType": "HARD"
         }]
@@ -899,6 +930,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"
         }]
       ]],
+      ["ecdsa-sig-formatter", [
+        ["npm:1.0.11", {
+          "packageLocation": "./.yarn/cache/ecdsa-sig-formatter-npm-1.0.11-b6784e7852-1.zip/node_modules/ecdsa-sig-formatter/",
+          "packageDependencies": [
+            ["ecdsa-sig-formatter", "npm:1.0.11"],
+            ["safe-buffer", "npm:5.1.2"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
       ["ee-first", [
         ["npm:1.1.1", {
           "packageLocation": "./.yarn/cache/ee-first-npm-1.1.1-33f8535b39-1.zip/node_modules/ee-first/",
@@ -1022,6 +1063,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["type-is", "npm:1.6.18"],
             ["utils-merge", "npm:1.0.1"],
             ["vary", "npm:1.1.2"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["express-bearer-token", [
+        ["npm:2.4.0", {
+          "packageLocation": "./.yarn/cache/express-bearer-token-npm-2.4.0-731c8c5c99-1.zip/node_modules/express-bearer-token/",
+          "packageDependencies": [
+            ["express-bearer-token", "npm:2.4.0"],
+            ["cookie", "npm:0.3.1"],
+            ["cookie-parser", "npm:1.4.5"]
           ],
           "linkType": "HARD"
         }]
@@ -1727,6 +1779,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"
         }]
       ]],
+      ["jsonwebtoken", [
+        ["npm:8.5.1", {
+          "packageLocation": "./.yarn/cache/jsonwebtoken-npm-8.5.1-c007670b76-1.zip/node_modules/jsonwebtoken/",
+          "packageDependencies": [
+            ["jsonwebtoken", "npm:8.5.1"],
+            ["jws", "npm:3.2.2"],
+            ["lodash.includes", "npm:4.3.0"],
+            ["lodash.isboolean", "npm:3.0.3"],
+            ["lodash.isinteger", "npm:4.0.4"],
+            ["lodash.isnumber", "npm:3.0.3"],
+            ["lodash.isplainobject", "npm:4.0.6"],
+            ["lodash.isstring", "npm:4.0.1"],
+            ["lodash.once", "npm:4.1.1"],
+            ["ms", "npm:2.1.2"],
+            ["semver", "npm:5.7.1"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
       ["jsprim", [
         ["npm:1.4.1", {
           "packageLocation": "./.yarn/cache/jsprim-npm-1.4.1-948d2c9ec3-1.zip/node_modules/jsprim/",
@@ -1736,6 +1807,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["extsprintf", "npm:1.3.0"],
             ["json-schema", "npm:0.2.3"],
             ["verror", "npm:1.10.0"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["jwa", [
+        ["npm:1.4.1", {
+          "packageLocation": "./.yarn/cache/jwa-npm-1.4.1-4f19d6572c-1.zip/node_modules/jwa/",
+          "packageDependencies": [
+            ["jwa", "npm:1.4.1"],
+            ["buffer-equal-constant-time", "npm:1.0.1"],
+            ["ecdsa-sig-formatter", "npm:1.0.11"],
+            ["safe-buffer", "npm:5.1.2"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["jws", [
+        ["npm:3.2.2", {
+          "packageLocation": "./.yarn/cache/jws-npm-3.2.2-c1ae59c7af-1.zip/node_modules/jws/",
+          "packageDependencies": [
+            ["jws", "npm:3.2.2"],
+            ["jwa", "npm:1.4.1"],
+            ["safe-buffer", "npm:5.1.2"]
           ],
           "linkType": "HARD"
         }]
@@ -1755,6 +1849,69 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/lodash-npm-4.17.15-566d9324f7-1.zip/node_modules/lodash/",
           "packageDependencies": [
             ["lodash", "npm:4.17.15"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["lodash.includes", [
+        ["npm:4.3.0", {
+          "packageLocation": "./.yarn/cache/lodash.includes-npm-4.3.0-3a2f6fa22c-1.zip/node_modules/lodash.includes/",
+          "packageDependencies": [
+            ["lodash.includes", "npm:4.3.0"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["lodash.isboolean", [
+        ["npm:3.0.3", {
+          "packageLocation": "./.yarn/cache/lodash.isboolean-npm-3.0.3-b575b41488-1.zip/node_modules/lodash.isboolean/",
+          "packageDependencies": [
+            ["lodash.isboolean", "npm:3.0.3"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["lodash.isinteger", [
+        ["npm:4.0.4", {
+          "packageLocation": "./.yarn/cache/lodash.isinteger-npm-4.0.4-42add9f4e1-1.zip/node_modules/lodash.isinteger/",
+          "packageDependencies": [
+            ["lodash.isinteger", "npm:4.0.4"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["lodash.isnumber", [
+        ["npm:3.0.3", {
+          "packageLocation": "./.yarn/cache/lodash.isnumber-npm-3.0.3-b3bb5f7347-1.zip/node_modules/lodash.isnumber/",
+          "packageDependencies": [
+            ["lodash.isnumber", "npm:3.0.3"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["lodash.isplainobject", [
+        ["npm:4.0.6", {
+          "packageLocation": "./.yarn/cache/lodash.isplainobject-npm-4.0.6-d73937742f-1.zip/node_modules/lodash.isplainobject/",
+          "packageDependencies": [
+            ["lodash.isplainobject", "npm:4.0.6"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["lodash.isstring", [
+        ["npm:4.0.1", {
+          "packageLocation": "./.yarn/cache/lodash.isstring-npm-4.0.1-721fee791c-1.zip/node_modules/lodash.isstring/",
+          "packageDependencies": [
+            ["lodash.isstring", "npm:4.0.1"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["lodash.once", [
+        ["npm:4.1.1", {
+          "packageLocation": "./.yarn/cache/lodash.once-npm-4.1.1-d8ba329ead-1.zip/node_modules/lodash.once/",
+          "packageDependencies": [
+            ["lodash.once", "npm:4.1.1"]
           ],
           "linkType": "HARD"
         }]
@@ -1863,9 +2020,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["body-parser", "npm:1.19.0"],
             ["dotenv", "npm:8.2.0"],
             ["express", "npm:4.17.1"],
+            ["express-bearer-token", "npm:2.4.0"],
             ["express-session", "npm:1.17.0"],
             ["gamedig", "npm:2.0.20"],
-            ["nodemon", "npm:2.0.2"]
+            ["jsonwebtoken", "npm:8.5.1"],
+            ["nodemon", "npm:2.0.2"],
+            ["uuid", "npm:7.0.2"]
           ],
           "linkType": "SOFT"
         }]
@@ -3080,6 +3240,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/uuid-npm-3.4.0-4fd8ef88ad-1.zip/node_modules/uuid/",
           "packageDependencies": [
             ["uuid", "npm:3.4.0"]
+          ],
+          "linkType": "HARD"
+        }],
+        ["npm:7.0.2", {
+          "packageLocation": "./.yarn/cache/uuid-npm-7.0.2-fe7c365529-1.zip/node_modules/uuid/",
+          "packageDependencies": [
+            ["uuid", "npm:7.0.2"]
           ],
           "linkType": "HARD"
         }]

@@ -1,8 +1,23 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
+const bearerToken = require("express-bearer-token");
 const session = require("express-session");
+
 const app = express();
+
+var privateKey = fs.readFileSync(
+  path.resolve(process.env.JWT_PRIVATE_PEM)
+);
+
+app.use(bearerToken({
+  cookie: {
+    signed: true,
+    secret: privateKey,
+    key: 'access_token'
+  }
+}));
 
 app.use(
   session({

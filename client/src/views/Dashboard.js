@@ -11,9 +11,12 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import Users from "./Users";
+import Nav from "../components/Nav";
+import { useUser } from "../context/User";
 
 const Dashbaord = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = useUser();
+
   const [serverInfo, setServerInfo] = useState({});
   useEffect(() => {
     axios
@@ -64,11 +67,14 @@ const Dashbaord = () => {
           {getServerInfo()}
           <div className={classes.userInfo}>
             {user.name}
-            <img
-              src={`https://crafatar.com/avatars/${user.id}?size=32`}
-              alt={user.name}
-              className={classes.avatar}
-            />
+            {user.mojang && (
+              <img
+                src={`https://crafatar.com/avatars/${user.mojang.id}?size=32`}
+                alt={user.mojang.name}
+                className={classes.avatar}
+              />
+            )}
+            <Nav />
           </div>
         </Toolbar>
       </AppBar>
@@ -89,7 +95,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: "18px"
   },
   avatar: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
+    width: 32,
+    height: 32
   },
   container: {
     marginTop: theme.spacing(2),

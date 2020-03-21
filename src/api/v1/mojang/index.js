@@ -7,10 +7,6 @@ const Mojang = require('../../../services/mojang');
 
 mojang.use('/auth', auth);
 
-mojang.get('/login', function (req, res) {
-  res.send('About mojang')
-})
-
 mojang.get('/uuid/:username', function (req, res) {
   const mojangService = new Mojang();
   mojangService.getUuidByName(req.params.username)

@@ -19,7 +19,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faStar as fasStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
 
-import Add from "./Add";
+import Add from "../../dialogs/WhitelistUser";
+import { useUser } from "../../context/User";
 
 const Users = () => {
   const [state, setState] = useState({
@@ -31,7 +32,7 @@ const Users = () => {
   const [serverInfo, setServerInfo] = useState({});
   const [userEdit, setUserEdit] = useState({});
 
-  const localUser = JSON.parse(localStorage.getItem("user"));
+  const localUser = useUser();
 
   useEffect(() => {
     fetchUsers();
@@ -39,10 +40,11 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
+    if (!localUser.mojang) return;
     const user = users.find(
       user =>
         user.uuid &&
-        user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "")
+        user.uuid.replace(/-/g, "") === localUser.mojang.id.replace(/-/g, "")
     );
     if (user && user.level >= 0) {
       setState({
@@ -50,7 +52,7 @@ const Users = () => {
         level: user.level
       });
     }
-  }, [users, localUser.id]);
+  }, [users, localUser.mojang]);
 
   const fetchUsers = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/whitelist`).then(response => {
@@ -85,7 +87,7 @@ const Users = () => {
   const editUser = user => () => {
     if (
       !state.isOp ||
-      user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "")
+      (localUser.minecraftUuid && user.uuid.replace(/-/g, "") === localUser.minecraftUuid.replace(/-/g, ""))
     )
       return;
     setUserEdit(user);
@@ -145,7 +147,7 @@ const Users = () => {
               <TableRow
                 key={user.name}
                 className={
-                  user.uuid.replace(/-/g, "") === localUser.id.replace(/-/g, "")
+                  localUser.mojang && user.uuid.replace(/-/g, "") === localUser.mojang.id.replace(/-/g, "")
                     ? classes.self
                     : state.isOp
                     ? classes.clickable
@@ -203,7 +205,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#ffc"
   },
   avatar: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+    width: 20,
+    height: 20
   },
   online: {
     backgroundColor: "#98fb98",

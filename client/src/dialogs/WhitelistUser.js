@@ -11,6 +11,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { useSnackbar } from "../context/Snackbar";
+
 export default function Add({ open, handleClose, level, userEdit = {} }) {
   const [found, setFound] = useState(false);
   const [model, setModel] = useState({
@@ -19,6 +21,7 @@ export default function Add({ open, handleClose, level, userEdit = {} }) {
     level: ""
   });
   const [error, setError] = useState("");
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     if (userEdit.uuid) {
@@ -62,6 +65,34 @@ export default function Add({ open, handleClose, level, userEdit = {} }) {
       });
   };
 
+  const removeUser = () => {
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/whitelist/${model.uuid}`)
+      .then(response => {
+        let modelCopy = { ...model };
+        snackbar.add({
+          message: `${model.name} removed!`,
+          undoAction: () => {
+            axios
+              .post(`${process.env.REACT_APP_API_URL}/whitelist`, modelCopy)
+              .then(response => {
+                snackbar.add({ message: `${modelCopy.name} restored!` });
+                closeDialog();
+              })
+              .catch(err => {
+                setFound(false);
+                setError(err.response.data.message);
+              });
+          }
+        });
+        closeDialog();
+      })
+      .catch(err => {
+        setFound(false);
+        setError(err.response.data.message);
+      });
+  };
+
   const closeDialog = () => {
     // reset state
     setFound(false);
@@ -81,6 +112,7 @@ export default function Add({ open, handleClose, level, userEdit = {} }) {
         open={open}
         onClose={closeDialog}
         aria-labelledby="form-dialog-title"
+        fullWidth
       >
         <form onSubmit={onSubmit}>
           <DialogTitle id="form-dialog-title">
@@ -114,7 +146,7 @@ export default function Add({ open, handleClose, level, userEdit = {} }) {
                   <div className={classes.username}>{model.name}</div>
                   <div className={classes.userid}>{model.uuid}</div>
                 </div>
-                {level > 0 && (
+                {level > 0 && level >= model.level && (
                   <TextField
                     id="level"
                     label="Permissions"
@@ -136,6 +168,13 @@ export default function Add({ open, handleClose, level, userEdit = {} }) {
             )}
           </DialogContent>
           <DialogActions>
+            {userEdit.uuid && !model.level && (
+              <div className={classes.secondaryAction}>
+                <Button onClick={removeUser} color="secondary">
+                  Remove
+                </Button>
+              </div>
+            )}
             <Button onClick={closeDialog} color="primary">
               Cancel
             </Button>
@@ -164,7 +203,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1, 0)
   },
   avatar: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+    width: 80,
+    height: 80
   },
   username: {
     fontSize: "18px",
@@ -176,5 +217,8 @@ const useStyles = makeStyles(theme => ({
   },
   error: {
     marginBottom: theme.spacing(2)
+  },
+  secondaryAction: {
+    flexGrow: 1
   }
 }));
