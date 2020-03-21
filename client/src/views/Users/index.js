@@ -53,7 +53,7 @@ const Users = () => {
   }, [users, localUser.id]);
 
   const fetchUsers = () => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users`).then(response => {
+    axios.get(`${process.env.REACT_APP_API_URL}/whitelist`).then(response => {
       let data = response.data;
       data.sort((a, b) => {
         if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;

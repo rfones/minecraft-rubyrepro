@@ -52,7 +52,7 @@ export default function Add({ open, handleClose, level, userEdit = {} }) {
 
   const addUser = () => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/users`, model)
+      .post(`${process.env.REACT_APP_API_URL}/whitelist`, model)
       .then(response => {
         closeDialog();
       })
