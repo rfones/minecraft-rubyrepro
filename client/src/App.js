@@ -34,7 +34,7 @@ function App() {
     const decoded = jwt.decode(accessToken);
     let now = parseInt(new Date().getTime() / 1000, 10);
     if (timeOffset) {
-      now = now + timeOffset;
+      now = now - timeOffset;
     }
     if (now < decoded.exp) {
       setAuthenticated(true);

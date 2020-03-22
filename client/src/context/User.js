@@ -4,13 +4,18 @@ import jwt from "jsonwebtoken";
 const UserContext = React.createContext();
 
 export function UserProvider({ children }) {
-  const updateUser = data => {
-    console.log("updateUser", { ...state, ...data });
+  const update = data => {
     setState(prevState => ({ ...prevState, ...data }));
   };
 
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    window.location.reload();
+  };
+
   const [state, setState] = React.useState({
-    update: updateUser
+    update: update,
+    logout: logout
   });
 
   useEffect(() => {

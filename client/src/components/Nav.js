@@ -55,6 +55,11 @@ export default function Nav() {
     setLinkAccountOpen(open);
   };
 
+  const logout = () => {
+    console.log('logging out...');
+    user.logout();
+  }
+
   return (
     <>
       <IconButton onClick={toggleDrawer()} className={classes.button}>
@@ -83,7 +88,7 @@ export default function Nav() {
                 <ListItemText primary="Link Minecraft Account" />
               </ListItem>
             )}
-            <ListItem button key="Log Out">
+            <ListItem button key="Log Out" onClick={logout}>
               <ListItemText primary="Log Out" />
             </ListItem>
           </List>
