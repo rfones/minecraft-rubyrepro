@@ -21,7 +21,7 @@ const Login = ({ onSuccess }) => {
   });
   const [model, setModel] = useState({
     name: "",
-    username: "",
+    email: "",
     password: ""
   });
   const [register, setRegister] = useState(false);
@@ -59,7 +59,7 @@ const Login = ({ onSuccess }) => {
           }
         })
         .catch(error => {
-          setState({ error: "Invalid Username/Password" });
+          setState({ error: "Invalid Email/Password" });
         });
     }
   };
@@ -104,11 +104,12 @@ const Login = ({ onSuccess }) => {
               margin="normal"
               required
               fullWidth
-              id="username"
+              type="email"
+              id="email"
               label="Email"
-              name="username"
+              name="email"
               autoFocus
-              onChange={handleChange("username")}
+              onChange={handleChange("email")}
             />
             <TextField
               variant="outlined"

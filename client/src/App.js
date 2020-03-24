@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import jwt from "jsonwebtoken";
+import { BrowserRouter as Router } from "react-router-dom";
+
+import { CssBaseline } from "@material-ui/core";
 
 import { SnackbarProvider } from "./context/Snackbar";
 import Login from "./views/Login";
-import Dashboard from "./views/Dashboard";
+import AuthenticatedApp from "./AuthenticatedApp";
 import { UserProvider } from "./context/User";
 
 axios.interceptors.request.use(
@@ -16,7 +19,12 @@ axios.interceptors.request.use(
     return config;
   },
   error => {
-    Promise.reject(error);
+    if (401 === error.response.status) {
+      // if api get's 401, refresh to trigger login screen
+      window.location.reload();
+    } else {
+      Promise.reject(error);
+    }
   }
 );
 
@@ -55,18 +63,22 @@ function App() {
   };
 
   if (authenticated === "loading") {
-    return <></>;
+    return null;
   }
   return (
     <SnackbarProvider>
+      <CssBaseline />
       {authenticated && (
-        <UserProvider>
-          <Dashboard />
-        </UserProvider>
+        <Router>
+          <UserProvider>
+            <AuthenticatedApp />
+          </UserProvider>
+        </Router>
       )}
       {!authenticated && <Login onSuccess={onLogin} />}
     </SnackbarProvider>
   );
 }
+
 
 export default App;

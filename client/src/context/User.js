@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 const UserContext = React.createContext();
 
 export function UserProvider({ children }) {
+  const [state, setState] = React.useState({});
+
   const update = data => {
     setState(prevState => ({ ...prevState, ...data }));
   };
@@ -13,17 +15,29 @@ export function UserProvider({ children }) {
     window.location.reload();
   };
 
-  const [state, setState] = React.useState({
-    update: update,
-    logout: logout
-  });
+  const canEdit = objectType => {
+    if (Array.isArray(state.groups) && state.groups.includes("superusers"))
+      return true;
+    return false;
+  };
 
+  const canView = objectType => {
+    if (Array.isArray(state.groups) && state.groups.includes("superusers"))
+      return true;
+    return false;
+  };
   useEffect(() => {
     const decoded = jwt.decode(localStorage.getItem("accessToken"));
     setState(prevState => ({ ...prevState, ...decoded.data }));
   }, []);
 
-  return <UserContext.Provider value={state}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider
+      value={{ ...state, update, logout, canView, canEdit }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 export function useUser() {

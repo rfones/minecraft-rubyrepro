@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
-// import Divider from "@material-ui/core/Divider";
+import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 // import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from "@material-ui/core/ListItemText";
@@ -26,6 +27,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     fontSize: "18px",
     padding: theme.spacing(1, 2)
+  },
+  username: {
+    flexGrow: 1
   },
   avatar: {
     marginRight: theme.spacing(1),
@@ -56,9 +60,8 @@ export default function Nav() {
   };
 
   const logout = () => {
-    console.log('logging out...');
     user.logout();
-  }
+  };
 
   return (
     <>
@@ -67,6 +70,9 @@ export default function Nav() {
       </IconButton>
       <Drawer anchor="right" open={open} onClose={toggleDrawer()}>
         <div className={classes.userInfo}>
+          <div className={classes.username}>
+          {user.name}
+          </div>
           {user.mojang && (
             <img
               src={`https://crafatar.com/avatars/${user.mojang.id}?size=32`}
@@ -74,7 +80,6 @@ export default function Nav() {
               className={classes.avatar}
             />
           )}
-          {user.name}
         </div>
         <div
           role="presentation"
@@ -84,20 +89,36 @@ export default function Nav() {
         >
           <List>
             {!user.mojang && (
-              <ListItem button key="Link Minecraft Account" onClick={linkAccount(true)}>
+              <ListItem
+                button
+                key="Link Minecraft Account"
+                onClick={linkAccount(true)}
+              >
                 <ListItemText primary="Link Minecraft Account" />
               </ListItem>
             )}
+            {user.mojang && (
+              <ListItem
+                component={Link}
+                to={`/players/${user.mojang.id}`}
+                key="My Profile"
+              >
+                <ListItemText primary="My Profile" />
+              </ListItem>
+            )}
+            <Divider />
+            <ListItem button key="Players" component={Link}
+                to={`/players`}>
+              <ListItemText primary="Players" />
+            </ListItem>
+            <Divider />
             <ListItem button key="Log Out" onClick={logout}>
               <ListItemText primary="Log Out" />
             </ListItem>
           </List>
         </div>
       </Drawer>
-      <LinkMinecraft
-        handleClose={linkAccount(false)}
-        open={linkAccountOpen}
-      />
+      <LinkMinecraft handleClose={linkAccount(false)} open={linkAccountOpen} />
     </>
   );
 }

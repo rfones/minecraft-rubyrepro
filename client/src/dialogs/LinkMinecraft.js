@@ -3,7 +3,6 @@ import axios from "axios";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -16,8 +15,7 @@ import { useUser } from "../context/User";
 
 export default function LinkMinecraft({ open, handleClose }) {
   const [model, setModel] = useState({
-    username: "",
-    password: ""
+    name: ""
   });
   const [error, setError] = useState("");
   const snackbar = useSnackbar();
@@ -35,11 +33,11 @@ export default function LinkMinecraft({ open, handleClose }) {
 
   const linkAccount = () => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/mojang/auth`, model)
+      .get(`${process.env.REACT_APP_API_URL}/mojang/uuid/${model.name}`)
       .then(response => {
-          const mojangUser = response.data && response.data.user;
+        const mojangUser = response.data;
         if (!mojangUser) {
-          setError({ message: "User data not found!" });
+          setError("User data not found!");
           return;
         }
         axios
@@ -48,9 +46,9 @@ export default function LinkMinecraft({ open, handleClose }) {
           })
           .then(() => {
             user.update({
-                mojang: mojangUser
+              mojang: mojangUser
             });
-            snackbar.add({message: "Minecraft account linked!"})
+            snackbar.add({ message: "Minecraft account linked!" });
             closeDialog();
           })
           .catch(error => {
@@ -65,8 +63,7 @@ export default function LinkMinecraft({ open, handleClose }) {
   const closeDialog = () => {
     // reset state
     setModel({
-      username: "",
-      password: ""
+      name: ""
     });
     setError("");
     handleClose();
@@ -86,9 +83,6 @@ export default function LinkMinecraft({ open, handleClose }) {
             Link Minecraft Account
           </DialogTitle>
           <DialogContent>
-            <Typography variant="body2">
-              Enter your Minecraft/Mojang credentials to link your account.
-            </Typography>
             {error && (
               <Alert className={classes.error} severity="error">
                 {error}
@@ -97,22 +91,12 @@ export default function LinkMinecraft({ open, handleClose }) {
             <TextField
               autoFocus
               margin="normal"
-              id="username"
-              label="Email"
+              id="name"
+              label="Minecraft Name"
               fullWidth
               variant="outlined"
-              value={model.username}
-              onChange={handleChange("username")}
-            />
-            <TextField
-              margin="normal"
-              id="password"
-              label="Password"
-              type="password"
-              fullWidth
-              variant="outlined"
-              value={model.password}
-              onChange={handleChange("password")}
+              value={model.name}
+              onChange={handleChange("name")}
             />
           </DialogContent>
           <DialogActions>

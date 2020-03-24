@@ -4,15 +4,26 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
-const userfile = "../json/users.json";
+const usersfile = "../json/users.json";
 
 class users {
-  constructor() {
-    this.users = JSON.parse(fs.readFileSync(path.resolve(__dirname, userfile)));
+  constructor(token) {
+    try {
+      this.users = JSON.parse(
+        fs.readFileSync(path.resolve(__dirname, usersfile))
+      );
+    } catch (error) {
+      if (error.code === "ENOENT") {
+        // if file doesn't exist, create empty array
+        this.users = [];
+      } else {
+        throw err;
+      }
+    }
   }
 
-  async authenticate(username, password) {
-    const user = this.users.find(user => user.username === username);
+  async authenticate(email, password) {
+    const user = this.users.find(user => user.email === email);
     if (!user) {
       return { message: "User not found!" };
     }
@@ -21,38 +32,58 @@ class users {
       var privateKey = fs.readFileSync(
         path.resolve(process.env.JWT_PRIVATE_PEM)
       );
-      delete user.hashedPassword;
+
+      // remove hashed password from user returned with token
+      let tokenUser = { ...user };
+      delete tokenUser.hashedPassword;
+
       var accessToken = jwt.sign(
-        { exp: Math.floor(Date.now() / 1000) + 60 * 60, data: user },
+        {
+          exp: Math.floor(Date.now() / 1000) + 60 * 60,
+          data: tokenUser
+        },
         privateKey,
         { algorithm: "RS256" }
       );
+
+      // update login info on user
+      this.update({
+        id: user.id,
+        loginCount: user.loginCount + 1 || 1,
+        lastLogin: new Date()
+      });
+
       return { success: true, accessToken };
     }
 
     return { message: "Authentication failed!" };
   }
 
-  async registerUser({ username, password, name }) {
-    const user = this.users.find(user => user.username === username);
+  async registerUser({ email, password, name }) {
+    const user = this.users.find(user => user.email === email);
     if (user) {
       return { message: "User already exists!" };
     }
 
-    const id = uuidv4();
     const hashedPassword = await argon2.hash(password);
 
-    this.users.push({ id, name, username, hashedPassword });
+    this.users.push({
+      id: uuidv4(),
+      name,
+      email,
+      hashedPassword,
+      created: new Date()
+    });
 
-    this.saveUserFile();
+    this.saveUsersFile();
     return { success: true };
   }
 
-  saveUserFile() {
-    console.log("saving users...", this.users);
+  saveUsersFile() {
     fs.writeFileSync(
-      path.resolve(__dirname, userfile),
-      JSON.stringify(this.users, null, 2)
+      path.resolve(__dirname, usersfile),
+      JSON.stringify(this.users, null, 2),
+      { flag: "w" }
     );
   }
 
@@ -62,7 +93,7 @@ class users {
       return { message: "User not found!" };
     }
     this.users[userIndex] = { ...this.users[userIndex], ...data };
-    this.saveUserFile();
+    this.saveUsersFile();
     return { success: true };
   }
 }

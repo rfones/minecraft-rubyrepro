@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -49,6 +50,26 @@ export function SnackbarProvider({ children }) {
     processQueue();
   };
 
+  const classes = useStyles();
+
+  const getClass = () => {
+    if (
+      messageInfo.severity &&
+      messageInfo.severity.toLowerCase() === "error"
+    ) {
+      return classes.error;
+    }
+
+    if (
+      messageInfo.severity &&
+      messageInfo.severity.toLowerCase() === "warning"
+    ) {
+      return classes.warning;
+    }
+
+    return null;
+  };
+
   return (
     <SnackbarContext.Provider value={state}>
       {messageInfo && (
@@ -63,10 +84,15 @@ export function SnackbarProvider({ children }) {
           onClose={handleClose}
           onExited={handleExited}
           message={messageInfo ? messageInfo.message : undefined}
+          className={getClass()}
           action={
             <>
               {messageInfo.undoAction && (
-                <Button color="secondary" size="small" onClick={messageInfo.undoAction}>
+                <Button
+                  color="secondary"
+                  size="small"
+                  onClick={messageInfo.undoAction}
+                >
                   UNDO
                 </Button>
               )}
@@ -85,6 +111,20 @@ export function SnackbarProvider({ children }) {
     </SnackbarContext.Provider>
   );
 }
+
+const useStyles = makeStyles(theme => ({
+  error: {
+    "& .MuiSnackbarContent-root": {
+      backgroundColor: "#b30000"
+    }
+  },
+  warning: {
+    "& .MuiSnackbarContent-root": {
+      backgroundColor: "#fc0",
+      color: "#000"
+    }
+  }
+}));
 
 export function useSnackbar() {
   const context = React.useContext(SnackbarContext);

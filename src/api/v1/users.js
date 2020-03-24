@@ -4,16 +4,23 @@ const users = express.Router();
 const authentication = require("./middleware/authentication");
 const Users = require("../../services/users");
 
+// UNAUTHENTICATED ROUTES
+
 users.post("/register", async function(req, res) {
   const usersService = new Users();
 
   let errors = [];
-  const username = req.body.username;
-  const password = req.body.password;
   const name = req.body.name;
-  if (!username) {
+  const email = req.body.email;
+  const password = req.body.password;
+  if (!name) {
     errors.push({
-      field: "username",
+      field: "name",
+      message: "is required"
+    });
+  }  if (!email) {
+    errors.push({
+      field: "email",
       message: "is required"
     });
   }
@@ -29,7 +36,7 @@ users.post("/register", async function(req, res) {
     return;
   }
 
-  const result = await usersService.registerUser({ name, username, password });
+  const result = await usersService.registerUser({ name, email, password });
 
   if (result.success) {
     res.send(result);
@@ -42,11 +49,11 @@ users.post("/auth", async function(req, res) {
   const usersService = new Users();
 
   let errors = [];
-  let username = req.body.username;
+  let email = req.body.email;
   let password = req.body.password;
-  if (!username) {
+  if (!email) {
     errors.push({
-      field: "username",
+      field: "email",
       message: "is required"
     });
   }
@@ -62,7 +69,7 @@ users.post("/auth", async function(req, res) {
     return;
   }
 
-  const result = await usersService.authenticate(username, password);
+  const result = await usersService.authenticate(email, password);
   if (result.success) {
     res.send(result);
     return;
@@ -71,6 +78,8 @@ users.post("/auth", async function(req, res) {
 });
 
 users.use(authentication);
+
+// AUTHENTICATED ROUTES
 
 users.put("/:id", async function(req, res) {
   if (req.user.id !== req.params.id) {
