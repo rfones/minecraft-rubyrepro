@@ -3,6 +3,9 @@ import axios from "axios";
 
 import MUIDataTable from "mui-datatables";
 
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 const Stats = ({ id }) => {
@@ -42,13 +45,6 @@ const Stats = ({ id }) => {
         // do nothing
       });
   }, [id]);
-
-  const rowStats = (rowData, rowMeta) => {
-    if (rowData.name === "Mob Kills") {
-      data["minecraft:killed"].forEach(row => {});
-    }
-    return null;
-  };
 
   const ticksToHumanReadable = ticks => {
     const sec = ticks * 0.05;
@@ -98,6 +94,111 @@ const Stats = ({ id }) => {
 
   const classes = useStyles();
 
+  const rowStats = (rowData, rowMeta) => {
+    const results = [];
+    if (rowData[0] === "Mob Kills") {
+      // damage_dealt: 793
+
+      const killed = data["minecraft:killed"];
+      Object.keys(killed).forEach(key => {
+        const name = key.slice(10).replace("_", " ");
+        results.push(
+          <TableRow className={classes.expanded} key={name}>
+            <TableCell />
+            <TableCell>&nbsp; {name}</TableCell>
+            <TableCell>{killed[key]}</TableCell>
+          </TableRow>
+        );
+      });
+      return results;
+    } else if (rowData[0] === "Deaths") {
+      // damage_taken: 1300
+
+      const killedBy = data["minecraft:killed_by"];
+      Object.keys(killedBy).forEach(key => {
+        const name = key.slice(10).replace("_", " ");
+        results.push(
+          <TableRow className={classes.expanded} key={name}>
+            <TableCell />
+            <TableCell>&nbsp; {name}</TableCell>
+            <TableCell>{killedBy[key]}</TableCell>
+          </TableRow>
+        );
+      });
+      return results;
+    } else if (rowData[0] === "Play Time") {
+      const custom = data["minecraft:custom"];
+      const items = [
+        {
+          key: "walk_one_cm",
+          label: "Walk Distance",
+          distance: true
+        },
+        {
+          key: "sprint_one_cm",
+          label: "Sprint Distance",
+          distance: true
+        },
+        {
+          key: "crouch_one_cm",
+          label: "Crouch Distance",
+          distance: true
+        },
+        {
+          key: "fall_one_cm",
+          label: "Fall Distance",
+          distance: true
+        },
+        {
+          key: "fly_one_cm",
+          label: "Fly Distance",
+          distance: true
+        },
+        {
+          key: "jump",
+          label: "Times Jumped"
+        },
+        {
+          key: "leave_game",
+          label: "Left Game"
+        },
+        {
+          key: "sneak_time",
+          label: "Sneak Time",
+          time: true
+        },
+        {
+          key: "time_since_rest",
+          label: "Time Since Last Sleep",
+          time: true
+        },
+        {
+          key: "time_since_death",
+          label: "Time Since Death",
+          time: true
+        }
+      ];
+      items.forEach(item => {
+        let value = custom["minecraft:" + item.key];
+        if (item.time) {
+          value = ticksToHumanReadable(value);
+        } else if (item.distance) {
+          value = cmToHumanReadable(value);
+        }
+        results.push(
+          <TableRow className={classes.expanded} key={item.label}>
+            <TableCell />
+            <TableCell>&nbsp; {item.label}</TableCell>
+            <TableCell>{value}</TableCell>
+          </TableRow>
+        );
+      });
+      return results;
+    }
+
+    return null;
+  };
+
   if (stats) {
     return (
       <MUIDataTable
@@ -111,8 +212,8 @@ const Stats = ({ id }) => {
           search: false,
           filter: false,
           selectableRows: false,
-          // expandableRows: true,
-          // renderExpandableRow: rowStats,
+          expandableRows: true,
+          renderExpandableRow: rowStats,
           pagination: false
         }}
       />
@@ -121,6 +222,10 @@ const Stats = ({ id }) => {
   return null;
 };
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+  expanded: {
+    backgroundColor: "rgba(0, 0, 0, 0.01)"
+  }
+}));
 
 export default Stats;
