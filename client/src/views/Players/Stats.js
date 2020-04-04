@@ -104,8 +104,14 @@ const Stats = ({ id }) => {
         const name = key.slice(10).replace("_", " ");
         results.push(
           <TableRow className={classes.expanded} key={name}>
-            <TableCell />
-            <TableCell>&nbsp; {name}</TableCell>
+            <TableCell align="right">
+              <img
+                src={`/images/${key.slice(10)}.png`}
+                className={classes.faceIcon}
+                alt=""
+              />
+            </TableCell>
+            <TableCell>{name}</TableCell>
             <TableCell>{killed[key]}</TableCell>
           </TableRow>
         );
@@ -119,8 +125,14 @@ const Stats = ({ id }) => {
         const name = key.slice(10).replace("_", " ");
         results.push(
           <TableRow className={classes.expanded} key={name}>
-            <TableCell />
-            <TableCell>&nbsp; {name}</TableCell>
+            <TableCell>
+              <img
+                src={`/images/${key.slice(10)}.png`}
+                className={classes.faceIcon}
+                alt=""
+              />
+            </TableCell>
+            <TableCell>{name}</TableCell>
             <TableCell>{killedBy[key]}</TableCell>
           </TableRow>
         );
@@ -225,6 +237,10 @@ const Stats = ({ id }) => {
 const useStyles = makeStyles(theme => ({
   expanded: {
     backgroundColor: "rgba(0, 0, 0, 0.01)"
+  },
+  faceIcon: {
+    width: 20,
+    height: 20
   }
 }));
 
