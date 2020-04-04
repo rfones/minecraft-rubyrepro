@@ -38,7 +38,6 @@ const Stats = ({ id }) => {
             value: custom["minecraft:deaths"]
           });
         }
-        console.log(results);
         setStats(results);
       })
       .catch(error => {
@@ -96,9 +95,15 @@ const Stats = ({ id }) => {
 
   const rowStats = (rowData, rowMeta) => {
     const results = [];
+    const custom = data["minecraft:custom"];
     if (rowData[0] === "Mob Kills") {
-      // damage_dealt: 793
-
+      results.push(
+        <TableRow className={classes.expanded}>
+          <TableCell />
+          <TableCell>Damage Dealt</TableCell>
+          <TableCell>{custom["minecraft:damage_dealt"]}</TableCell>
+        </TableRow>
+      );
       const killed = data["minecraft:killed"];
       Object.keys(killed).forEach(key => {
         const name = key.slice(10).replace("_", " ");
@@ -118,8 +123,13 @@ const Stats = ({ id }) => {
       });
       return results;
     } else if (rowData[0] === "Deaths") {
-      // damage_taken: 1300
-
+      results.push(
+        <TableRow className={classes.expanded}>
+          <TableCell />
+          <TableCell>Damage Taken</TableCell>
+          <TableCell>{custom["minecraft:damage_taken"]}</TableCell>
+        </TableRow>
+      );
       const killedBy = data["minecraft:killed_by"];
       Object.keys(killedBy).forEach(key => {
         const name = key.slice(10).replace("_", " ");
@@ -139,7 +149,6 @@ const Stats = ({ id }) => {
       });
       return results;
     } else if (rowData[0] === "Play Time") {
-      const custom = data["minecraft:custom"];
       const items = [
         {
           key: "walk_one_cm",
@@ -161,11 +170,11 @@ const Stats = ({ id }) => {
           label: "Fall Distance",
           distance: true
         },
-        {
-          key: "fly_one_cm",
-          label: "Fly Distance",
-          distance: true
-        },
+        // {
+        //   key: "fly_one_cm",
+        //   label: "Fly Distance",
+        //   distance: true
+        // },
         {
           key: "jump",
           label: "Times Jumped"
@@ -200,7 +209,7 @@ const Stats = ({ id }) => {
         results.push(
           <TableRow className={classes.expanded} key={item.label}>
             <TableCell />
-            <TableCell>&nbsp; {item.label}</TableCell>
+            <TableCell>{item.label}</TableCell>
             <TableCell>{value}</TableCell>
           </TableRow>
         );
@@ -236,7 +245,7 @@ const Stats = ({ id }) => {
 
 const useStyles = makeStyles(theme => ({
   expanded: {
-    backgroundColor: "rgba(0, 0, 0, 0.01)"
+    backgroundColor: "rgba(0, 0, 0, 0.02)"
   },
   faceIcon: {
     width: 20,
