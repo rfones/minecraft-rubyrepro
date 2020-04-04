@@ -86,6 +86,11 @@ const Stats = ({ id }) => {
     return response;
   };
 
+  const damageToHearts = damage => {
+    const hearts = damage / 2 / 10;
+    return Math.floor(hearts);
+  };
+
   const columns = [
     { name: "name", label: "Name" },
     { name: "value", label: "Value" }
@@ -99,9 +104,17 @@ const Stats = ({ id }) => {
     if (rowData[0] === "Mob Kills") {
       results.push(
         <TableRow className={classes.expanded}>
-          <TableCell />
+          <TableCell>
+            <img
+              src={`/images/heart.png`}
+              className={classes.faceIcon}
+              alt=""
+            />
+          </TableCell>
           <TableCell>Damage Dealt</TableCell>
-          <TableCell>{custom["minecraft:damage_dealt"]}</TableCell>
+          <TableCell>
+            {damageToHearts(custom["minecraft:damage_dealt"])}
+          </TableCell>
         </TableRow>
       );
       const killed = data["minecraft:killed"];
@@ -125,9 +138,17 @@ const Stats = ({ id }) => {
     } else if (rowData[0] === "Deaths") {
       results.push(
         <TableRow className={classes.expanded}>
-          <TableCell />
+          <TableCell>
+            <img
+              src={`/images/heart.png`}
+              className={classes.faceIcon}
+              alt=""
+            />
+          </TableCell>
           <TableCell>Damage Taken</TableCell>
-          <TableCell>{custom["minecraft:damage_taken"]}</TableCell>
+          <TableCell>
+            {damageToHearts(custom["minecraft:damage_taken"])}
+          </TableCell>
         </TableRow>
       );
       const killedBy = data["minecraft:killed_by"];
