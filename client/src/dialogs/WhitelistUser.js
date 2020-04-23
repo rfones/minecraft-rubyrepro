@@ -35,7 +35,7 @@ export default function Add({ open, handleClose }) {
       .get(`${process.env.REACT_APP_API_URL}/mojang/uuid/${model.name}`)
       .then(response => {
         if (response.data && response.data.id) {
-          setModel(prevState => ({ ...prevState, ...response.data }));
+          setModel(prevState => ({ ...prevState, uuid: response.data.id, name: response.data.name }));
           setFound(true);
           setError("");
         } else {
