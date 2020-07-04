@@ -44,3 +44,4 @@ app.get("*", (req, res) => {
 
 // app.listen(8080, '192.168.1.130');
 app.listen(8080);
+console.log('listening on port 8080');
