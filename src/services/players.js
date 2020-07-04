@@ -115,12 +115,15 @@ class players {
             process.env.OPS_JSON,
             JSON.stringify(this.ops, null, 2)
           );
-        } else if (whitelistPlayer > -1) {
+        }
+        if (whitelistPlayer > -1) {
           this.whitelist.splice(whitelistPlayer, 1);
           fs.writeFileSync(
             process.env.WHITELIST_JSON,
             JSON.stringify(this.whitelist, null, 2)
           );
+          
+          exec("/usr/bin/screen -p 0 -S mc-fresh -X eval 'stuff \"whitelist reload\"\015'");
         }
         resolve();
       } catch (error) {
