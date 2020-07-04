@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { exec } = require("child_process");
 
 class players {
   whitelist;
@@ -68,6 +69,7 @@ class players {
           }
         }
 
+        var reloadWhitelist = false;
         if (whitelistPlayer > -1) {
           this.whitelist[whitelistPlayer] = {
             ...this.whitelist[whitelistPlayer],
@@ -79,11 +81,16 @@ class players {
             name: player.name || this.ops[opsPlayer].name,
             uuid: player.uuid
           });
+          reloadWhitelist = true;
         }
         fs.writeFileSync(
           process.env.WHITELIST_JSON,
           JSON.stringify(this.whitelist, null, 2)
         );
+
+        if (reloadWhitelist) {
+          exec("/usr/bin/screen -p 0 -S mc-fresh -X eval 'stuff \"whitelist reload\"\015'");
+        }
 
         resolve(player);
       } catch (error) {
