@@ -42,35 +42,18 @@ class players {
           );
 
           // remove from whitelist
-          if (whitelistPlayer) {
-            this.whitelist = this.whitelist.filter(
-              whitelistPlayer =>
-                whitelistPlayer.uuid.replace(/-/g, "") !==
-                player.uuid.replace(/-/g, "")
-            );
-            fs.writeFileSync(
-              process.env.WHITELIST_JSON,
-              JSON.stringify(this.whitelist, null, 2)
-            );
-          }
+          // if (whitelistPlayer) {
+          //   this.whitelist = this.whitelist.filter(
+          //     whitelistPlayer =>
+          //       whitelistPlayer.uuid.replace(/-/g, "") !==
+          //       player.uuid.replace(/-/g, "")
+          //   );
+          //   fs.writeFileSync(
+          //     process.env.WHITELIST_JSON,
+          //     JSON.stringify(this.whitelist, null, 2)
+          //   );
+          // }
         } else {
-          if (whitelistPlayer > -1) {
-            this.whitelist[whitelistPlayer] = {
-              ...this.whitelist[whitelistPlayer],
-              ...player
-            };
-          } else {
-            // strip extra props from player
-            this.whitelist.push({
-              name: player.name || this.ops[opsPlayer].name,
-              uuid: player.uuid
-            });
-          }
-          fs.writeFileSync(
-            process.env.WHITELIST_JSON,
-            JSON.stringify(this.whitelist, null, 2)
-          );
-
           // remove from ops
           if (opsPlayer > -1) {
             this.ops = this.ops.filter(
@@ -84,6 +67,24 @@ class players {
             );
           }
         }
+
+        if (whitelistPlayer > -1) {
+          this.whitelist[whitelistPlayer] = {
+            ...this.whitelist[whitelistPlayer],
+            ...player
+          };
+        } else {
+          // strip extra props from player
+          this.whitelist.push({
+            name: player.name || this.ops[opsPlayer].name,
+            uuid: player.uuid
+          });
+        }
+        fs.writeFileSync(
+          process.env.WHITELIST_JSON,
+          JSON.stringify(this.whitelist, null, 2)
+        );
+
         resolve(player);
       } catch (error) {
         reject(error);
