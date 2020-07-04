@@ -29,11 +29,11 @@ const Header = () => {
       return (
         <div className={classes.heading}>
           <Typography variant="h6">
-            {serverInfo.raw.vanilla.raw.description.text}
+            {serverInfo.name || serverInfo.raw.vanilla.raw.description.text}
           </Typography>
           <Typography variant="body2">
-            Players {serverInfo.raw.vanilla.raw.players.online} /{" "}
-            {serverInfo.raw.vanilla.raw.players.max} - Version{" "}
+            Players {serverInfo.players.length || serverInfo.raw.vanilla.raw.players.online} /{" "}
+            {serverInfo.maxplayers || serverInfo.raw.vanilla.raw.players.max} - Version{" "}
             {serverInfo.raw.vanilla.raw.version.name}
           </Typography>
         </div>
