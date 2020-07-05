@@ -9,11 +9,10 @@ class players {
   constructor() {
     this.whitelist = JSON.parse(fs.readFileSync(process.env.WHITELIST_JSON));
     this.ops = JSON.parse(fs.readFileSync(process.env.OPS_JSON));
-    this.players = [...this.whitelist, ...this.ops];
   }
 
   getAll() {
-    return this.players;
+    return this.whitelist;
   }
 
   save(player) {
@@ -89,7 +88,7 @@ class players {
         );
 
         if (reloadWhitelist) {
-          exec("/usr/bin/screen -p 0 -S mc-fresh -X eval 'stuff \"whitelist reload\"\015'");
+          exec("/usr/bin/screen -p 0 -S mc-fresh -X eval 'stuff \"whitelist reload\"\r'");
         }
 
         resolve(player);
@@ -123,7 +122,7 @@ class players {
             JSON.stringify(this.whitelist, null, 2)
           );
           
-          exec("/usr/bin/screen -p 0 -S mc-fresh -X eval 'stuff \"whitelist reload\"\015'");
+          exec("/usr/bin/screen -p 0 -S mc-fresh -X eval 'stuff \"whitelist reload\"\r'");
         }
         resolve();
       } catch (error) {
