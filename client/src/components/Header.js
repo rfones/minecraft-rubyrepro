@@ -32,8 +32,8 @@ const Header = () => {
             {serverInfo.name || serverInfo.raw.vanilla.raw.description.text}
           </Typography>
           <Typography variant="body2">
-            Players {serverInfo.players.length || serverInfo.raw.vanilla.raw.players.online} /{" "}
-            {serverInfo.maxplayers || serverInfo.raw.vanilla.raw.players.max} - Version{" "}
+            Players {serverInfo.raw.vanilla.raw.players.online} /{" "}
+            {serverInfo.maxplayers || serverInfo.raw.vanilla.raw.players.max} - {" "}
             {serverInfo.raw.vanilla.raw.version.name}
           </Typography>
         </div>
