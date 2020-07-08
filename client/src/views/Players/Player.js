@@ -156,10 +156,10 @@ const User = () => {
                   className={classes.level}
                   onChange={updatePlayerLevel}
                 >
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={1}>1 - Can only bypass spawn protection</MenuItem>
+                  <MenuItem value={2}>2 - Access to most Op commands, excluding player management</MenuItem>
+                  <MenuItem value={3}>3 - Can Kick/Ban/Op/DeOp Players</MenuItem>
+                  <MenuItem value={4}>4 - Full access, including /stop</MenuItem>
                 </TextField>
               )}
               <div className={classes.remove}>
