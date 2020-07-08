@@ -68,7 +68,7 @@ export default function Add({ open, handleClose }) {
       uuid: ""
     });
     setError("");
-    handleClose();
+    handleClose(model);
   };
   const classes = useStyles();
 

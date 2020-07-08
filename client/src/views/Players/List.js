@@ -74,9 +74,16 @@ const List = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = model => {
     setOpen(false);
-    fetchPlayers();
+    const data = [...players];
+    data.push(model);
+    data.sort((a, b) => {
+      if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      return 0;
+    });
+    setPlayers(data);
   };
 
   const viewPlayer = player => () => {
